@@ -2,6 +2,10 @@
 {
     /// <summary>
     /// 用户
+    /// <para>一个用户对应一个地址</para>
+    /// <para>一个地址对应一个用户</para>
+    /// <para>一个工作项对应一个用户</para>
+    /// <para>一个用户可对应多个工作项</para>
     /// </summary>
     public class User
     {
@@ -26,5 +30,7 @@
         public string Email { get; set; }
 
         public Address Address { get; set; }
+
+        public List<WorkItem> WorkItems { get; set; }
     }
 }

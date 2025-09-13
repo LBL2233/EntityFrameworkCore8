@@ -2,6 +2,8 @@
 {
     /// <summary>
     /// 评论
+    /// <para>一条评论对应一个工作项</para>
+    /// <para>一条工作项可对应一个多条评论</para>
     /// </summary>
     public class Comment
     {
@@ -29,5 +31,9 @@
         /// 评论的更新日期
         /// </summary>
         public DateTime UpdateDate { get; set; }
+
+        public WorkItem WorkItem { get; set; }
+
+        public int WorkItemId { get; set; }
     }
 }

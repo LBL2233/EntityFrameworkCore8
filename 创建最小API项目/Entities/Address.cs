@@ -2,6 +2,8 @@
 {
     /// <summary>
     /// 地址
+    /// <para>一个地址对应一个用户</para>
+    /// <para>一个用户对应一个地址</para>
     /// </summary>
     public class Address
     {

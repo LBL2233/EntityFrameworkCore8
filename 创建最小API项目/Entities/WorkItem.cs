@@ -6,6 +6,10 @@ namespace MyBoards.Entities
 {
     /// <summary>
     /// 工作项
+    /// <para>一个工作项可对应多条评论</para>
+    /// <para>一条评论对应一个工作项</para>
+    /// <para>一个工作项对应一个用户</para>
+    /// <para>一个用户可对应多个工作项</para>
     /// </summary>
     public class WorkItem
     {
@@ -69,7 +73,15 @@ namespace MyBoards.Entities
         //[Precision(14,2)]  // 指定数据库中的列类型为decimal,精度为14,小数位为2
         public decimal RemaningWork { get; set; }
 
-
         public string Type { get; set; }
+
+        public List<Comment> Comments { get; set; } = new List<Comment>();
+
+        /// <summary>
+        /// 工作项的作者
+        /// </summary>
+        public User Author { get; set; }
+
+        public Guid AuthorId { get; set; }
     }
 }

@@ -44,6 +44,14 @@ namespace MyBoards.Entities
                 eb.Property(wi => wi.Activity).HasMaxLength(200); //配置 Activity 属性的最大长度为200
                 eb.Property(wi => wi.RemaningWork).HasPrecision(14,2); //配置 RemaningWork 属性的数据库列类型为 decimal,精度为14,小数位为2
                 eb.Property(wi=>wi.Priorty).HasDefaultValue(1); //配置 Priorty 属性的默认值为 1
+
+                eb.HasMany(w => w.Comments) //配置 WorkItem 实体与 Comment 实体之间的一对多关系
+                .WithOne(c => c.WorkItem) //配置 Comment 实体与 WorkItem 实体之间的多对一关系
+                .HasForeignKey(c => c.WorkItemId); //指定 Comment 实体中的 WorkItemId 属性作为外键
+
+                eb.HasOne<User>(w => w.Author) //配置 WorkItem 实体与 User 实体之间的多对一关系
+                .WithMany(u => u.WorkItems) //配置 User 实体与 WorkItem 实体之间的一对多关系
+                .HasForeignKey(w => w.AuthorId); //指定 WorkItem 实体中的 AuthorId 属性作为外键
             });
 
             modelBuilder.Entity<Comment>(eb =>
