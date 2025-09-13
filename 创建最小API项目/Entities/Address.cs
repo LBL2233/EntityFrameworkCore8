@@ -29,5 +29,9 @@
         /// 邮政编码
         /// </summary>
         public string PostalCode { get; set; }
+
+        public User User { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }

@@ -52,6 +52,11 @@ namespace MyBoards.Entities
                 eb.Property(x => x.UpdateDate).ValueGeneratedOnUpdate(); //配置 UpdateDate 属性在每次更新时自动生成值
             });
 
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Address) // 配置 User 实体与 Address 实体之间的一对一关系
+                .WithOne(a => a.User) // 配置 Address 实体与 User 实体之间的一对一关系
+                .HasForeignKey<Address>(a => a.UserId); // 指定 Address 实体中的 UserId 属性作为外键
+
             base.OnModelCreating(modelBuilder);
         }
     }
