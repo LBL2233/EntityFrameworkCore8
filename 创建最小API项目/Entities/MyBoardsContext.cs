@@ -25,6 +25,26 @@ namespace MyBoards.Entities
         /// <param name="modelBuilder">该参数允许使用者配置数据库中的特定实体</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //配置 WorkItem 实体的 State 属性，要求它在数据库中是“必填”的（即不能为 NULL）。
+            modelBuilder.Entity<WorkItem>()
+                .Property(x => x.State)
+                .IsRequired();
+
+            //配置 WorkItem 实体的 Area 属性，指定它在数据库中的列类型为 varchar(200)。
+            modelBuilder.Entity<WorkItem>()
+                .Property(x => x.Area)
+                .HasColumnType("varchar(200)");
+
+            //与上面的写法功能相同，都是配置实体中的属性，只是使用这种方法配置多个属性时更简洁方便
+            modelBuilder.Entity<WorkItem>(eb =>
+            {
+                eb.Property(wi => wi.IterationPath).HasColumnName("Iteration_Path");
+                eb.Property(wi => wi.Efford).HasColumnType("decimal(5,2)");
+                eb.Property(wi => wi.EndDate).HasPrecision(3);
+                eb.Property(wi => wi.Activity).HasMaxLength(200);
+                eb.Property(wi => wi.RemaningWork).HasPrecision(14,2);
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }
