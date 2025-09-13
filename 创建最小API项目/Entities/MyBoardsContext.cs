@@ -49,9 +49,39 @@ namespace MyBoards.Entities
                 .WithOne(c => c.WorkItem) //配置 Comment 实体与 WorkItem 实体之间的多对一关系
                 .HasForeignKey(c => c.WorkItemId); //指定 Comment 实体中的 WorkItemId 属性作为外键
 
+                #region 外键解释
+                //这段代码配置了 WorkItem（工作项）和 User（用户）之间的关系：
+                //•	WorkItem 表有一个 AuthorId 字段，这个字段就是外键。
+                //•	这个外键指向 User 表的主键 Id 字段。
+                //•	这样，每个 WorkItem 都关联到一个 User（作者），而一个 User 可以有多个 WorkItem。
+                //总结：
+                //•	外键是 WorkItem 表中的 AuthorId 字段。
+                //•	它引用的是 User 表的主键 Id 字段。
+                //作用：
+                //•	保证 WorkItem.AuthorId 的值必须在 User.Id 中存在，否则无法插入或更新数据。
+                //•	实现了“一个用户有多个工作项，一个工作项只属于一个用户”的关系。
+                //小提示：外键总是在“多”的一方（这里是 WorkItem）的表中
+                #endregion
                 eb.HasOne<User>(w => w.Author) //配置 WorkItem 实体与 User 实体之间的多对一关系
                 .WithMany(u => u.WorkItems) //配置 User 实体与 WorkItem 实体之间的一对多关系
                 .HasForeignKey(w => w.AuthorId); //指定 WorkItem 实体中的 AuthorId 属性作为外键
+
+                eb.HasMany(w => w.Tags) //配置 WorkItem 实体与 Tag 实体之间的多对多关系
+                    .WithMany(t => t.WorkItems) //配置 Tag 实体与 WorkItem 实体之间的多对多关系
+                    .UsingEntity<WorkItemTag>( //配置连接实体 WorkItemTag
+                    w => w.HasOne(wit => wit.Tag) //配置 WorkItemTag 实体与 Tag 实体之间的多对一关系
+                    .WithMany()
+                    .HasForeignKey(wit => wit.TagId),
+
+                    w => w.HasOne(wit => wit.WorkItem) //配置 WorkItemTag 实体与 WorkItem 实体之间的多对一关系
+                    .WithMany()
+                    .HasForeignKey(wit => wit.WorkItemId),
+
+                    wit =>
+                    {
+                        wit.HasKey(t => new { t.TagId, t.WorkItemId }); //配置联合主键，由 TagId 和 WorkItemId 组成
+                        wit.Property(t => t.PublicationDate).HasDefaultValueSql("getutcdate()"); //配置 PublicationDate 属性的默认值为当前UTC时间
+                    });
             });
 
             modelBuilder.Entity<Comment>(eb =>

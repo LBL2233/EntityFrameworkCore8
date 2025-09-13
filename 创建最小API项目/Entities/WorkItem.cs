@@ -10,6 +10,8 @@ namespace MyBoards.Entities
     /// <para>一条评论对应一个工作项</para>
     /// <para>一个工作项对应一个用户</para>
     /// <para>一个用户可对应多个工作项</para>
+    /// <para>每个工作项可以对应多个标签</para>
+    /// <para>每个标签可以对应多个工作项</para>
     /// </summary>
     public class WorkItem
     {
@@ -83,5 +85,7 @@ namespace MyBoards.Entities
         public User Author { get; set; }
 
         public Guid AuthorId { get; set; }
+
+        public List<Tag> Tags { get; set; }
     }
 }
