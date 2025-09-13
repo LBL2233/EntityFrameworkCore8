@@ -12,14 +12,16 @@ namespace MyBoards.Entities
         //在此处将利用创建好的类来定义数据库中将存在的表
         //DbSet类接收一个泛型参数，这个泛型参数将代表特定表，给定DbSet的名称将代表数据库中对应表的名称
         public DbSet<WorkItem> WorkItems { get; set; }
+        public DbSet<Epic> Epics { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<Task> Tasks { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Address> Addresses { get; set; }
-
         public DbSet<WorkItemState> WorkItemStates { get; set; }
 
-        //现在，整个数据库上下文包含6个属性，这些属性将代表数据库中的6个表
+        //现在，整个数据库上下文包含9个属性，这些属性将代表数据库中的9个表
 
         /// <summary>
         /// 用于配置数据库模型的方法
@@ -34,14 +36,24 @@ namespace MyBoards.Entities
                 .Property(x => x.Area)
                 .HasColumnType("varchar(200)");
 
+            modelBuilder.Entity<Epic>()
+                .Property(x => x.EndDate)
+                .HasPrecision(3); //配置 EndDate 属性的精度为3，即毫秒级别
+
+            modelBuilder.Entity<Issue>()
+                .Property(x => x.Efford)
+                .HasColumnType("decimal(5,2)"); //配置 Efford 属性的数据库列类型为 decimal,精度为5,小数位为2
+
+            modelBuilder.Entity<Task>(eb =>
+            {
+                eb.Property(x => x.Activity).HasMaxLength(200); //配置 Activity 属性的最大长度为200
+                eb.Property(x => x.RemaningWork).HasPrecision(14, 2); //配置 RemaningWork 属性的数据库列类型为 decimal,精度为14,小数位为2
+            });
+
             //与上面的写法功能相同，都是配置实体中的属性，只是使用这种方法配置多个属性时更简洁方便
             modelBuilder.Entity<WorkItem>(eb =>
             {
                 eb.Property(wi => wi.IterationPath).HasColumnName("Iteration_Path"); //配置 IterationPath 属性在数据库中的列名为 Iteration_Path
-                eb.Property(wi => wi.Efford).HasColumnType("decimal(5,2)"); //配置 Efford 属性的数据库列类型为 decimal,精度为5,小数位为2
-                eb.Property(wi => wi.EndDate).HasPrecision(3); //配置 EndDate 属性的精度为3，即毫秒级别
-                eb.Property(wi => wi.Activity).HasMaxLength(200); //配置 Activity 属性的最大长度为200
-                eb.Property(wi => wi.RemaningWork).HasPrecision(14,2); //配置 RemaningWork 属性的数据库列类型为 decimal,精度为14,小数位为2
                 eb.Property(wi=>wi.Priorty).HasDefaultValue(1); //配置 Priorty 属性的默认值为 1
 
                 eb.HasOne(w => w.State) //配置 WorkItem 实体与 WorkItemState 实体之间的多对一关系
