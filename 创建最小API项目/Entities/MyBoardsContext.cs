@@ -38,11 +38,18 @@ namespace MyBoards.Entities
             //与上面的写法功能相同，都是配置实体中的属性，只是使用这种方法配置多个属性时更简洁方便
             modelBuilder.Entity<WorkItem>(eb =>
             {
-                eb.Property(wi => wi.IterationPath).HasColumnName("Iteration_Path");
-                eb.Property(wi => wi.Efford).HasColumnType("decimal(5,2)");
-                eb.Property(wi => wi.EndDate).HasPrecision(3);
-                eb.Property(wi => wi.Activity).HasMaxLength(200);
-                eb.Property(wi => wi.RemaningWork).HasPrecision(14,2);
+                eb.Property(wi => wi.IterationPath).HasColumnName("Iteration_Path"); //配置 IterationPath 属性在数据库中的列名为 Iteration_Path
+                eb.Property(wi => wi.Efford).HasColumnType("decimal(5,2)"); //配置 Efford 属性的数据库列类型为 decimal,精度为5,小数位为2
+                eb.Property(wi => wi.EndDate).HasPrecision(3); //配置 EndDate 属性的精度为3，即毫秒级别
+                eb.Property(wi => wi.Activity).HasMaxLength(200); //配置 Activity 属性的最大长度为200
+                eb.Property(wi => wi.RemaningWork).HasPrecision(14,2); //配置 RemaningWork 属性的数据库列类型为 decimal,精度为14,小数位为2
+                eb.Property(wi=>wi.Priorty).HasDefaultValue(1); //配置 Priorty 属性的默认值为 1
+            });
+
+            modelBuilder.Entity<Comment>(eb =>
+            {
+                eb.Property(x=>x.CreatedDate).HasDefaultValue("getutcdate()"); //配置 CreatedDate 属性的默认值为当前UTC时间
+                eb.Property(x => x.UpdateDate).ValueGeneratedOnUpdate(); //配置 UpdateDate 属性在每次更新时自动生成值
             });
 
             base.OnModelCreating(modelBuilder);
