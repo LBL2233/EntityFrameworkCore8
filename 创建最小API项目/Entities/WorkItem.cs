@@ -20,11 +20,9 @@ namespace MyBoards.Entities
         /// </summary>
         public int Id { get; set; }
 
-        /// <summary>
-        /// 状态
-        /// </summary>
-        //[Required]  //EntityFramework中引用类型通常生成允许为空的列，使用[Required]特性可以将其标记为非空列  在MyBoardsContext类中的OnModelCreating方法中也可以使用Fluent API来配置属性为必填项
-        public string? State { get; set; }
+        public WorkItemState State { get; set; }
+
+        public int StateId { get; set; }
 
         /// <summary>
         /// 区域
