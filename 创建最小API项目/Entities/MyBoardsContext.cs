@@ -101,7 +101,7 @@ namespace MyBoards.Entities
 
             modelBuilder.Entity<Comment>(eb =>
             {
-                eb.Property(x=>x.CreatedDate).HasDefaultValue("getutcdate()"); //配置 CreatedDate 属性的默认值为当前UTC时间
+                eb.Property(x=>x.CreatedDate).HasDefaultValueSql("getutcdate()"); //配置 CreatedDate 属性的默认值为当前UTC时间
                 eb.Property(x => x.UpdateDate).ValueGeneratedOnUpdate(); //配置 UpdateDate 属性在每次更新时自动生成值
             });
 
