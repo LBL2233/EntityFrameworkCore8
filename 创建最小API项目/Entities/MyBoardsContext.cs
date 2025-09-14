@@ -29,13 +29,6 @@ namespace MyBoards.Entities
         /// <param name="modelBuilder">该参数允许使用者配置数据库中的特定实体</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-
-            //配置 WorkItem 实体的 Area 属性，指定它在数据库中的列类型为 varchar(200)。
-            modelBuilder.Entity<WorkItem>()
-                .Property(x => x.Area)
-                .HasColumnType("varchar(200)");
-
             modelBuilder.Entity<Epic>()
                 .Property(x => x.EndDate)
                 .HasPrecision(3); //配置 EndDate 属性的精度为3，即毫秒级别
@@ -49,6 +42,11 @@ namespace MyBoards.Entities
                 eb.Property(x => x.Activity).HasMaxLength(200); //配置 Activity 属性的最大长度为200
                 eb.Property(x => x.RemaningWork).HasPrecision(14, 2); //配置 RemaningWork 属性的数据库列类型为 decimal,精度为14,小数位为2
             });
+
+            //配置 WorkItem 实体的 Area 属性，指定它在数据库中的列类型为 varchar(200)。
+            modelBuilder.Entity<WorkItem>()
+                .Property(x => x.Area)
+                .HasColumnType("varchar(200)");
 
             //与上面的写法功能相同，都是配置实体中的属性，只是使用这种方法配置多个属性时更简洁方便
             modelBuilder.Entity<WorkItem>(eb =>
@@ -119,6 +117,13 @@ namespace MyBoards.Entities
                 .Property(x=>x.Value)
                 .IsRequired() // 配置 Value 属性为必填
                 .HasMaxLength(50); // 配置 Value 属性的最大长度为 50
+
+            modelBuilder.Entity<WorkItemState>()
+                .HasData( // 使用 HasData 方法为 WorkItemState 实体预填充数据
+                new WorkItemState { Id = 1, Value = "To Do" },
+                new WorkItemState { Id = 2, Value = "Doing" },
+                new WorkItemState { Id = 3, Value = "Done" }
+                );
 
             base.OnModelCreating(modelBuilder);
         }
