@@ -20,7 +20,9 @@
         /// <summary>
         /// 评论的作者
         /// </summary>
-        public string Author { get; set; }
+        public User Author { get; set; }
+
+        public Guid AuthorId { get; set; }
 
         /// <summary>
         /// 评论的创建日期

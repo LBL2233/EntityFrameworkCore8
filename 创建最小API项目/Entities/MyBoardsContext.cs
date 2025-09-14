@@ -103,6 +103,11 @@ namespace MyBoards.Entities
             {
                 eb.Property(x=>x.CreatedDate).HasDefaultValueSql("getutcdate()"); //配置 CreatedDate 属性的默认值为当前UTC时间
                 eb.Property(x => x.UpdateDate).ValueGeneratedOnUpdate(); //配置 UpdateDate 属性在每次更新时自动生成值
+
+                eb.HasOne<User>(c => c.Author) //配置 Comment 实体与 User 实体之间的多对一关系
+                .WithMany(a=>a.Comments) //配置 User 实体与 Comment 实体之间的一对多关系
+                .HasForeignKey(c => c.AuthorId) //指定 Comment 实体中的 AuthorId 属性作为外键
+                .OnDelete(DeleteBehavior.NoAction); //配置删除行为为 NoAction，防止级联删除
             });
 
             modelBuilder.Entity<User>()
