@@ -15,14 +15,9 @@
         public Guid Id { get; set; }
 
         /// <summary>
-        /// 名字
+        /// 全名
         /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// 姓氏
-        /// </summary>
-        public string LastName { get; set; }
+        public string FullName { get; set; }
 
         /// <summary>
         /// 电子邮件
