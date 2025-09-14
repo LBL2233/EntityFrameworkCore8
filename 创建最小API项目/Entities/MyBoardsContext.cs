@@ -125,6 +125,15 @@ namespace MyBoards.Entities
                 new WorkItemState { Id = 3, Value = "Done" }
                 );
 
+            modelBuilder.Entity<Tag>()
+                .HasData( // 使用 HasData 方法为 Tag 实体预填充数据
+                new Tag { Id = 1, Value = "Web" },
+                new Tag { Id = 2, Value = "UI" },
+                new Tag { Id = 3, Value = "Desktop" },
+                new Tag { Id = 4, Value = "API" },
+                new Tag { Id = 5, Value = "Service" }
+                );
+
             base.OnModelCreating(modelBuilder);
         }
     }
