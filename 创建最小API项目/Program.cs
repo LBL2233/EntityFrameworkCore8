@@ -33,6 +33,15 @@ namespace MyBoards
 
             app.UseAuthorization();
 
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetService<MyBoardsContext>();
+
+            var pendingMigrations = dbContext.Database.GetPendingMigrations(); //获取是否有任何迁移尚未应用到连接字符串中数据库的信息
+            if (pendingMigrations.Any()) //如果有待执行的迁移
+            {
+                dbContext.Database.Migrate(); //执行所有待执行的迁移
+            }
+
             app.Run();
         }
     }
